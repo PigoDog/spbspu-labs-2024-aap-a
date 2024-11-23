@@ -1,11 +1,12 @@
 #ifndef OUTPUT_MATRIX_H
 #define OUTPUT_MATRIX_H
 
-#include <iostream>
+#include <ostream>
+#include <cstddef>
+#include <cmath>
 
 namespace timofeev
 {
-  int check_diag(const int* matrix, size_t size);
+  void check_diag(std::ostream& out, int* matrix, size_t strk, size_t stl);
 }
-
 #endif
