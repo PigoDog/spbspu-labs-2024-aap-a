@@ -1,49 +1,29 @@
 #include "output_matrix.h"
 #include <iostream>
 
-
-void timofeev::check_diag(std::ostream& out, int* matrix, size_t strk, size_t stl)
+int timofeev::check_diag(const int* matrix, size_t size)
 {
-  size_t sum_dig = strk + stl - 1;
-  size_t sum_el = (strk * stl) + ((stl - 1) * stl);
-  int* values = make_array(sum_el)
-  size_t count = 0;
-  for (size_t i = 0; i < (strk + stl - 1); i++)
+  const size_t move = size - 1;
+  size_t diag = size;
+  for (size_t i = 1; i < size; i++)
   {
-    size_t col = 0;
-    int icur = i;
-    int diag = 0;
-    for (size_t j = (stl - 1); (col <= i) && (col < stl); j--)
+    diag--;
+    size_t left_in_diag = diag;
+    size_t check_el = i;
+    size_t fine_check = 0;
+    while (left_in_diag > 0)
     {
-      int jcur = j;
-      if (icur * stl + jcur < (strk * stl))
+      if (matrix[check_el] == matrix[(check_el + (move * i))])
       {
-        values[count] = matrix[(icur * stl + jcur)];
-        count++;
+        check_el += size + 1;
+        fine_check++;
       }
-      icur--;
-      jcur--;
-      col++;
+      left_in_diag--;
+    }
+    if (fine_check == diag)
+    {
+      return 1;
     }
   }
-  size_t mtr = 0;
-  for (size_t i = 0; i < count; i++)
-  {
-    for (size_t j = 0; j < count && j != i; j++)
-    {
-      if (values[i] == values[j])
-      {
-        mtr += 1;
-      }
-    }
-  }
-  free(values);
-  if (mtr > 0)
-  {
-    out << "the matrix contains diagonals with equal values\n";
-  }
-  else
-  {
-    out << "the matrix doesn't contains diagonals with equal values\n";
-  }
+  return 0;
 }
